@@ -1,36 +1,53 @@
 package dw.modelos.entidades.user;
 
 import dw.modelos.entidades.Entity;
+import utils.valuesObjects.AsignRol;
 import utils.valuesObjects.CustomID;
 
 public class Usuario extends Entity {
+
     private String _email;
     private String _password;
+    private String _dni;
     private String _names;
     private String _lastNames;
     private Boolean _isActive;
-    
-    public Usuario(){
-    }
+    private AsignRol _rol;
 
-    public Usuario(String email, String password,
-            String names, String lasNames) {
+    public Usuario() {
+    }
+    
+    // Constructor con rol específico    
+    public Usuario(String email, String password, String dni,
+            String names, String lasNames, AsignRol rol) {
         super(null);
         this._email = email;
         this._password = password;
+        this._dni = dni;
         this._names = names;
         this._lastNames = lasNames;
         this._isActive = true;
+        this._rol = rol;
     }
-    
-     public Usuario(String email, String password,
-            String names, String lasNames, CustomID id) {
-        super(id !=null ? id: new CustomID());
+
+    // cuando el usuario tiene un id generado
+    public Usuario(String email, String password, String dni,
+            String names, String lasNames, AsignRol rol, CustomID id) {
+        super(id != null ? id : new CustomID());
         this._email = email;
         this._password = password;
         this._names = names;
         this._lastNames = lasNames;
         this._isActive = true;
+        this._rol = rol;
+    }
+
+    public String dni() {
+        return _dni;
+    }
+
+    public AsignRol rol() {
+        return _rol;
     }
 
     public String email() {
@@ -72,4 +89,13 @@ public class Usuario extends Entity {
     public void setIsActive(Boolean _isActive) {
         this._isActive = _isActive;
     }
+
+    public void setDni(String _dni) {
+        this._dni = _dni;
+    }
+
+    public void setRol(AsignRol _rol) {
+        this._rol = _rol;
+    }
+
 }

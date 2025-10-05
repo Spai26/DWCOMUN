@@ -12,14 +12,8 @@ public interface UsuarioDAO{
     boolean update(Usuario usuario);
     boolean delete(String id);
     
-    // Búsquedas específicas
     Optional<Usuario> findByEmail(String email);
-    boolean existEmail(String email);
-    
-    // Operaciones de estado
-    boolean desactive(String id);
-    boolean active(String id);
-    
+    Optional<Usuario> findByDni(String usuario);  
     // Búsquedas con filtros
     List<Usuario> finByNames(String nombre);
     List<Usuario> findAllByActive();

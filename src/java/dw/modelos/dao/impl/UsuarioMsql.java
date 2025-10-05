@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import utils.valuesObjects.AsignRol;
 import utils.valuesObjects.CustomID;
 
 public class UsuarioMsql extends BaseDAO implements UsuarioDAO {
@@ -21,16 +22,23 @@ public class UsuarioMsql extends BaseDAO implements UsuarioDAO {
 
     @Override
     public Usuario save(Usuario usuario) {
-        String sql = "INSERT INTO " + TABLE + "(id, email, password, nombres, apellidos, isActive) VALUES(?, ?, ?, ?, ?, ?)";
-        boolean success = executeUpdate(sql,
-                usuario.getId().toString(),
-                usuario.email(),
-                usuario.password(),
-                usuario.names(),
-                usuario.lastNames(),
-                usuario.isActive());
+        String sql = "INSERT INTO " + TABLE + "(id, email, password, dni, nombres, apellidos, isActive, rol) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            boolean success = executeUpdate(sql,
+                    usuario.getId().toString(),
+                    usuario.email(),
+                    usuario.password(),
+                    usuario.dni(),
+                    usuario.names(),
+                    usuario.lastNames(),
+                    usuario.isActive(),
+                    usuario.rol().name());
 
-        return success ? usuario : null;
+            return success ? usuario : null;
+        } catch (Exception e) {
+            throw new RuntimeException("Error en registro validar los campos." + e.getMessage());
+        }
+
     }
 
     @Override
@@ -42,10 +50,11 @@ public class UsuarioMsql extends BaseDAO implements UsuarioDAO {
             if (rs.next()) {
                 return Optional.of(mapResultSetToUsuario(rs));
             }
+
+            return Optional.empty();
         } catch (Exception e) {
             throw new RuntimeException("Error al buscar por ID: " + e.getMessage(), e);
         }
-        return Optional.empty();
     }
 
     @Override
@@ -70,27 +79,29 @@ public class UsuarioMsql extends BaseDAO implements UsuarioDAO {
 
     @Override
     public boolean delete(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "DELETE FROM " + TABLE + " WHERE id = ?";
+
+        try {
+            return executeUpdate(sql, id);
+        } catch (Exception e) {
+            throw new RuntimeException("Error en eliminar");
+        }
     }
 
     @Override
     public Optional<Usuario> findByEmail(String email) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+        String sql = "SELECT * FROM " + TABLE + " WHERE email = ?";
 
-    @Override
-    public boolean existEmail(String email) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+        try {
+            ResultSet rs = executeQuery(sql, email);
+            if (rs.next()) {
+                return Optional.of(mapResultSetToUsuario(rs));
+            }
 
-    @Override
-    public boolean desactive(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean active(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return Optional.empty();
+        } catch (Exception e) {
+            throw new RuntimeException("Error al buscar por email: " + e.getMessage(), e);
+        }
     }
 
     @Override
@@ -107,10 +118,28 @@ public class UsuarioMsql extends BaseDAO implements UsuarioDAO {
         return new Usuario(
                 rs.getString("email"),
                 rs.getString("password"),
+                rs.getString("dni"),
                 rs.getString("nombres"),
                 rs.getString("apellidos"),
+                AsignRol.fromString(rs.getString("rol")),
                 new CustomID(rs.getString("id"))
         );
+    }
+
+    @Override
+    public Optional<Usuario> findByDni(String usuario) {
+        String sql = "SELECT * FROM " + TABLE + " WHERE dni = ?";
+
+        try {
+            ResultSet rs = executeQuery(sql, usuario);
+            if (rs.next()) {
+                return Optional.of(mapResultSetToUsuario(rs));
+            }
+
+            return Optional.empty();
+        } catch (Exception e) {
+            throw new RuntimeException("Error al buscar por email o dni: " + e.getMessage(), e);
+        }
     }
 
 }
