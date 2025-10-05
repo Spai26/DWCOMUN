@@ -45,4 +45,15 @@ public class UsuarioService {
     public Optional<Usuario> existeDNI(String dni) {
         return usuarioDAO.findByDni(dni);
     }
+
+    public boolean verificarPassword(Optional<Usuario> opt, String plainPassword) {
+        if (opt.isPresent()) {
+            Usuario usuario = opt.get();
+            if (passwordService.compare(plainPassword, usuario.password())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
+

@@ -54,7 +54,7 @@ public class LoginDTO {
     
     // verificar si cumple con email
     public boolean isValidEmail() {
-        return getUsuarioClean().matches("^[\\\\w._%+-]+@[\\\\w.-]+\\\\.[A-Za-z]{2,6}$");
+        return getUsuarioClean().matches("^[\\w._%+-]+@[\\w.-]+\\.[A-Za-z]{2,6}$");
     }
     
     public String getTypeEntry(){

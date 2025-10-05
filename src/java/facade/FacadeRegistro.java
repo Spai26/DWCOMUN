@@ -5,7 +5,7 @@ import dw.modelos.entidades.user.Usuario;
 import dw.servicios.AutentificacionService;
 import utils.valuesObjects.AsignRol;
 
-public class FacadeRegistrarUsuario {
+public class FacadeRegistro {
 
     public boolean run(RegistrarDTO newUsuario) {
 

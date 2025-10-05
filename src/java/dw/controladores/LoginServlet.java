@@ -1,5 +1,7 @@
 package dw.controladores;
 
+import dw.modelos.dto.LoginDTO;
+import facade.FacadeLogin;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -7,19 +9,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Optional;
+
+import dw.modelos.entidades.user.Usuario;
+import utils.valuesObjects.AsignRol;
 
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -28,7 +25,7 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");            
+            out.println("<title>Servlet LoginServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
@@ -37,43 +34,66 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("/login.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+
+        LoginDTO login = new LoginDTO();
+
+        login.setPassword(request.getParameter("password"));
+        login.setUsuario(request.getParameter("usuario"));
+
+        if (!login.isValid()) {
+            request.setAttribute("error", "Usuario y contraseña son requeridos");
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            return;
+        }
+
+        String tipo = login.getTypeEntry();
+        if ("INVALID".equals(tipo)) {
+            request.setAttribute("error", "El usuario debe ser un email válido o DNI de 8 dígitos");
+            request.setAttribute("usuarioIntentado", login.getUsuario()); // Mantener el valor en el form
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            return;
+        }
+
+        FacadeLogin facade = new FacadeLogin();
+        Optional<Usuario> usuarioOpt = facade.run(login);
+
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            String destino = determinarDestino(usuario.rol());
+            response.sendRedirect(request.getContextPath() + destino);
+        } else {
+            // Login fallido
+            request.setAttribute("error", "Credenciales incorrectas o usuario inactivo");
+            request.setAttribute("usuarioIntentado", login.getUsuario()); // Mantener el valor en el form
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+        }
+
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+    private String determinarDestino(AsignRol rol) {
+        if (rol == null) {
+            return "/index.jsp";
+        }
 
+        switch (rol) {
+            case ADMIN:
+                return "/admin/dashboard.jsp";
+            case MEDICO:
+                return "/medico/dashboard.jsp";
+            case PACIENTE:
+                return "/paciente/dashboard.jsp";
+            default:
+                return "/index.jsp";
+        }
+    }
 }

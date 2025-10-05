@@ -1,7 +1,7 @@
 package dw.controladores;
 
 import dw.modelos.dto.RegistrarDTO;
-import facade.FacadeRegistrarUsuario;
+import facade.FacadeRegistro;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -37,7 +37,7 @@ public class RegistrarServlet extends HttpServlet {
             return;
         }
 
-        FacadeRegistrarUsuario facade = new FacadeRegistrarUsuario();
+        FacadeRegistro facade = new FacadeRegistro();
         boolean result = facade.run(usuario);
 
         if (result) {
