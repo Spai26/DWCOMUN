@@ -5,10 +5,15 @@
         <group>
             <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/DWCOMUN/src/java/dw/modelos/entidades/Paciente.java</file>
             <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/DWCOMUN/src/java/dw/modelos/entidades/Medico.java</file>
+            <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/DWCOMUN/web/WEB-INF/views/usuarios/listar.jsp</file>
             <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/DWCOMUN/src/java/dw/controladores/LoginServlet.java</file>
+            <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/DWCOMUN/src/java/dw/controladores/UsuariosServlet.java</file>
             <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/DWCOMUN/src/java/facade/FacadeLogin.java</file>
             <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/DWCOMUN/src/java/facade/FacadeRegistro.java</file>
+            <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/DWCOMUN/src/java/dw/modelos/entidades/user/Usuario.java</file>
+            <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/DWCOMUN/src/java/dw/servicios/test.java</file>
             <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/DWCOMUN/src/java/dw/controladores/RegistrarServlet.java</file>
+            <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/DWCOMUN/src/java/dw/servicios/PasswordHasher.java</file>
         </group>
     </open-files>
 </project-private>
