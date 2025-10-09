@@ -2,6 +2,13 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/DWCOMUN/src/java/dw/modelos/entidades/Paciente.java</file>
+            <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/DWCOMUN/src/java/dw/modelos/entidades/Medico.java</file>
+            <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/DWCOMUN/src/java/dw/controladores/LoginServlet.java</file>
+            <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/DWCOMUN/src/java/facade/FacadeLogin.java</file>
+            <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/DWCOMUN/src/java/facade/FacadeRegistro.java</file>
+            <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/DWCOMUN/src/java/dw/controladores/RegistrarServlet.java</file>
+        </group>
     </open-files>
 </project-private>
